@@ -2,20 +2,22 @@
 #
 # Author: Evan Juras
 # Date: 1/15/18
-# Description: 
+# Description:
 # This program uses a TensorFlow-trained neural network to perform object detection.
 # It loads the classifier and uses it to perform object detection on an image.
 # It draws boxes, scores, and labels around the objects of interest in the image.
 
-## Some of the code is copied from Google's example at
-## https://github.com/tensorflow/models/blob/master/research/object_detection/object_detection_tutorial.ipynb
+# Some of the code is copied from Google's example at
+# https://github.com/tensorflow/models/blob/master/research/object_detection/object_detection_tutorial.ipynb
 
-## and some is copied from Dat Tran's example at
-## https://github.com/datitran/object_detector_app/blob/master/object_detection_app.py
+# and some is copied from Dat Tran's example at
+# https://github.com/datitran/object_detector_app/blob/master/object_detection_app.py
 
-## but I changed it to make it more understandable to me.
+# but I changed it to make it more understandable to me.
 
 # Import packages
+from object_detection.utils import visualization_utils as vis_util
+from object_detection.utils import label_map_util
 import os
 import cv2
 import numpy as np
@@ -26,25 +28,23 @@ import sys
 sys.path.append("..")
 
 # Import utilites
-from utils import label_map_util
-from utils import visualization_utils as vis_util
 
 # Name of the directory containing the object detection module we're using
 MODEL_NAME = 'inference_graph'
-IMAGE_NAME = 'test1.jpg'
+IMAGE_NAME = '20.jpg'
 
 # Grab path to current working directory
 CWD_PATH = os.getcwd()
 
 # Path to frozen detection graph .pb file, which contains the model that is used
 # for object detection.
-PATH_TO_CKPT = os.path.join(CWD_PATH,MODEL_NAME,'frozen_inference_graph.pb')
+PATH_TO_CKPT = os.path.join(CWD_PATH, MODEL_NAME, 'frozen_inference_graph.pb')
 
 # Path to label map file
-PATH_TO_LABELS = os.path.join(CWD_PATH,'training','labelmap.pbtxt')
+PATH_TO_LABELS = os.path.join(CWD_PATH, 'training', 'labelmap.pbtxt')
 
 # Path to image
-PATH_TO_IMAGE = os.path.join(CWD_PATH,IMAGE_NAME)
+PATH_TO_IMAGE = os.path.join(CWD_PATH, 'images', IMAGE_NAME)
 
 # Number of classes the object detector can identify
 NUM_CLASSES = 6
@@ -55,7 +55,8 @@ NUM_CLASSES = 6
 # Here we use internal utility functions, but anything that returns a
 # dictionary mapping integers to appropriate string labels would be fine
 label_map = label_map_util.load_labelmap(PATH_TO_LABELS)
-categories = label_map_util.convert_label_map_to_categories(label_map, max_num_classes=NUM_CLASSES, use_display_name=True)
+categories = label_map_util.convert_label_map_to_categories(
+    label_map, max_num_classes=NUM_CLASSES, use_display_name=True)
 category_index = label_map_util.create_category_index(categories)
 
 # Load the Tensorflow model into memory.
